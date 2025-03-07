@@ -2,13 +2,13 @@ package cz.filipvarga.tracker.domain;
 
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Event {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_event")
     private Long id;
 
@@ -16,8 +16,13 @@ public class Event {
     private String name;
 
     @ManyToMany
-    private ArrayList<Person> persons;
+    @JoinTable(
+            name = "event_person",
+            joinColumns = @JoinColumn(name = "id_event"),
+            inverseJoinColumns = @JoinColumn(name = "id_person")
+    )
+    private List<Person> persons;
 
-    @OneToMany
-    private ArrayList<Expense> expenses;
+    @OneToMany(mappedBy = "event", orphanRemoval = true, cascade = CascadeType.ALL)
+    private List<Expense> expenses;
 }

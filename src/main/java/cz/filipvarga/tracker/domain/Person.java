@@ -2,25 +2,25 @@ package cz.filipvarga.tracker.domain;
 
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Person {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_person")
     private Long id;
 
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = true)
+    @Column(name = "bank_account", nullable = true)
     private String bankAccount;
 
-    @ManyToMany
-    private ArrayList<Event> events;
+    @ManyToMany(mappedBy = "persons")
+    private List<Event> events;
 
-    @OneToMany
-    private ArrayList<Expense> expenses;
+    @OneToMany(mappedBy = "person", orphanRemoval = true, cascade = CascadeType.ALL)
+    private List<Expense> expenses;
 }
