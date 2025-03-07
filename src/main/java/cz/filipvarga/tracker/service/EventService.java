@@ -1,9 +1,11 @@
 package cz.filipvarga.tracker.service;
 
 import cz.filipvarga.tracker.domain.Event;
+import cz.filipvarga.tracker.domain.Person;
 import cz.filipvarga.tracker.persistent.JPAEventRepository;
 import cz.filipvarga.tracker.persistent.JPAPersonRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,9 +14,11 @@ import java.util.List;
 public class EventService implements EventServiceInterface{
 
     private final JPAEventRepository eventRepository;
+    private final JPAPersonRepository personRepository;
 
-    public EventService(JPAEventRepository eventRepository) {
+    public EventService(JPAEventRepository eventRepository, JPAPersonRepository personRepository) {
         this.eventRepository = eventRepository;
+        this.personRepository = personRepository;
     }
 
     // CREATE
@@ -59,8 +63,9 @@ public class EventService implements EventServiceInterface{
     }
 
 
+    @Transactional
     @Override
-    public void addPersonToEvent(Long eventId, Long personId) throws EntityNotFoundException {
+    public Event addPersonToEvent(Long eventId, Long personId) throws EntityNotFoundException {
         if (!eventRepository.existsById(eventId)) {
             throw new EntityNotFoundException("Event with id " + eventId + " does not exist");
         }
@@ -69,7 +74,22 @@ public class EventService implements EventServiceInterface{
             throw new EntityNotFoundException("Person with id " + personId + " does not exist");
         }
 
-        Event event = getEventById(eventId);
-        event.
+        Event event = eventRepository.findById(eventId).get();
+        Person person = personRepository.findById(personId).get();
+
+        if (!event.getPersons().contains(person)) {
+            event.getPersons().add(person);
+            person.getEvents().add(event);
+        }
+
+        return eventRepository.save(event);
+    }
+
+    @Override
+    public List<Event> getAllEventsByPersonId(Long personId) throws EntityNotFoundException {
+        if (personRepository.existsById(personId)) {
+            return eventRepository.findAllByPersonId(personId);
+        }
+        else throw new EntityNotFoundException("Person with id " + personId + " does not exist");
     }
 }

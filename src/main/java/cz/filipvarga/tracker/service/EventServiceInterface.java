@@ -13,5 +13,6 @@ public interface EventServiceInterface {
     Event updateEvent(Event event); // UPDATE
     void deleteEvent(Long id) throws EntityNotFoundException;             // DELETE
 
-    void addPersonToEvent(Long eventId, Long personId);
+    Event addPersonToEvent(Long eventId, Long personId);
+    List<Event> getAllEventsByPersonId(Long personId);
 }
