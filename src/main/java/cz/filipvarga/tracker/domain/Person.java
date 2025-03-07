@@ -16,8 +16,20 @@ public class Person {
     @Column(name = "id_person")
     private Long id;
 
+    @Column(nullable = false, unique = true)
+    private String email;
+
     @Column(nullable = false)
     private String name;
+
+    @Column
+    private String password;
+
+    @Column
+    private String googleId;
+
+    @Enumerated(EnumType.STRING)
+    private AuthProvider authProvider;
 
     @Column(name = "bank_account", nullable = true)
     private String bankAccount;
