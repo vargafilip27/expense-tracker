@@ -12,4 +12,10 @@ public class Expense {
 
     @Column(nullable = false)
     private double amount;
+
+    @ManyToOne
+    private Event event;
+
+    @ManyToOne
+    private Person person;
 }

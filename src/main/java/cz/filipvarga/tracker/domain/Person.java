@@ -2,6 +2,8 @@ package cz.filipvarga.tracker.domain;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+
 @Entity
 public class Person {
 
@@ -15,4 +17,10 @@ public class Person {
 
     @Column(nullable = true)
     private String bankAccount;
+
+    @ManyToMany
+    private ArrayList<Event> events;
+
+    @OneToMany
+    private ArrayList<Expense> expenses;
 }
