@@ -1,4 +1,4 @@
-package cz.filipvarga.expense.domain;
+package cz.filipvarga.tracker.domain;
 
 import jakarta.persistence.*;
 
@@ -10,5 +10,6 @@ public class Expense {
     @Column(name = "id_expense")
     private Long id;
 
+    @Column(nullable = false)
     private double amount;
 }

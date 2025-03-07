@@ -1,4 +1,4 @@
-package cz.filipvarga.expense;
+package cz.filipvarga.tracker;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

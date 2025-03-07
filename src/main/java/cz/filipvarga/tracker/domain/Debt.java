@@ -1,14 +1,12 @@
-package cz.filipvarga.expense.domain;
+package cz.filipvarga.tracker.domain;
 
 import jakarta.persistence.*;
 
 @Entity
-public class Person {
+public class Debt {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name = "id_person")
+    @Column(name = "id_debt")
     private Long id;
-
-    private String name;
 }
